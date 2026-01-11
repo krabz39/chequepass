@@ -1,19 +1,97 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, session, redirect
 import uuid
+
 from config import APP_SECRET
 from db import query
 from daraja import stk_push
 
+# Route blueprints
+from routes.auth import auth
+from routes.events import events
+from routes.tickets import tickets
+from routes.payments import payments
+from routes.passes import passes
+from routes.resale import resale
+from routes.scan import scan
+from routes.webhooks import webhooks
+
 app = Flask(__name__)
 app.secret_key = APP_SECRET
 
+# --------------------------------
+# Register blueprints
+# --------------------------------
+app.register_blueprint(auth)
+app.register_blueprint(events)
+app.register_blueprint(tickets)
+app.register_blueprint(payments)
+app.register_blueprint(passes)
+app.register_blueprint(resale)
+app.register_blueprint(scan)
+app.register_blueprint(webhooks)
 
-@app.get("/")
+# --------------------------------
+# UI ROUTES
+# --------------------------------
+
+@app.route("/")
 def home():
-    return "ChequePass API running"
+    return render_template("home.html")
 
+@app.route("/event/<event_id>")
+def event_page(event_id):
+    e = query(
+        "SELECT id,title,venue,city,start_time FROM events WHERE id=%s",
+        (event_id,),
+        fetchone=True
+    )
+    if not e:
+        return "Event not found", 404
 
-# Create order + STK push
+    return render_template("event.html", event={
+        "id": e[0],
+        "title": e[1],
+        "venue": e[2],
+        "city": e[3],
+        "start_time": e[4]
+    })
+
+@app.route("/creator")
+def creator_page():
+    return render_template("creator.html")
+
+@app.route("/resale")
+def resale_page():
+    return render_template("resale.html")
+
+@app.route("/scan")
+def scan_page():
+    return render_template("scan.html")
+
+@app.route("/mypasses")
+def my_passes_page():
+    uid = session.get("user_id")
+    if not uid:
+        return redirect("/")
+
+    p = query(
+        "SELECT id,status FROM passes WHERE owner_id=%s",
+        (uid,),
+        fetchone=True
+    )
+
+    if not p:
+        return "No passes yet"
+
+    return render_template("pass.html", pass={
+        "id": p[0],
+        "status": p[1]
+    })
+
+# --------------------------------
+# API ROUTES (Your original logic)
+# --------------------------------
+
 @app.post("/buy")
 def buy_ticket():
     data = request.json
@@ -26,7 +104,7 @@ def buy_ticket():
     query("""
         INSERT INTO orders (id, user_id, event_id, amount, status)
         VALUES (%s, %s, %s, %s, 'pending')
-    """, (order_id, None, event_id, amount))
+    """, (order_id, session.get("user_id"), event_id, amount))
 
     stk = stk_push(phone, amount, order_id)
 
@@ -35,8 +113,6 @@ def buy_ticket():
         "stk": stk
     })
 
-
-# M-Pesa callback
 @app.post("/webhook/mpesa")
 def mpesa_callback():
     payload = request.json
@@ -57,3 +133,7 @@ def mpesa_callback():
         """, (order_id, receipt, amount, str(payload)))
 
     return jsonify({"ok": True})
+
+@app.get("/health")
+def health():
+    return "OK"
