@@ -1,0 +1,9 @@
+CREATE INDEX idx_users_phone ON users(phone);
+CREATE INDEX idx_events_status ON events(status);
+CREATE INDEX idx_orders_user ON orders(user_id);
+CREATE INDEX idx_orders_status ON orders(status);
+CREATE INDEX idx_payments_order ON payments(order_id);
+CREATE INDEX idx_passes_owner ON passes(owner_id);
+CREATE INDEX idx_passes_qr ON passes(qr_hash);
+CREATE INDEX idx_resales_status ON resales(status);
+CREATE INDEX idx_scans_pass ON scans(pass_id);

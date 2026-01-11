@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChequePass</title>
+
+<style>
+:root{
+  --teal:#1F8A8A;
+  --orange:#E36A1D;
+  --gold:#F4B400;
+  --brown:#5A2D12;
+  --black:#1A1A1A;
+  --offwhite:#FAF7F2;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:Inter,system-ui;
+}
+
+body{
+  margin:0;
+  background:var(--offwhite);
+  color:#111;
+}
+
+/* ===== TOP BAR ===== */
+header{
+  background:var(--black);
+  color:white;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:3px solid var(--gold);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size:18px;
+}
+
+.logo img{
+  height:34px;
+}
+
+.logo .cheque{
+  color:var(--teal);
+}
+
+.logo .pass{
+  color:var(--orange);
+}
+
+/* ===== NAV ===== */
+nav a{
+  color:white;
+  text-decoration:none;
+  margin-left:14px;
+  font-size:14px;
+  opacity:.9;
+}
+
+nav a:hover{
+  color:var(--gold);
+}
+
+/* ===== CARDS ===== */
+.card{
+  background:white;
+  border-radius:16px;
+  padding:16px;
+  margin:12px;
+  border:2px solid var(--brown);
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+/* ===== BUTTONS ===== */
+.btn{
+  background:linear-gradient(135deg,var(--orange),var(--gold));
+  color:white;
+  padding:14px;
+  border-radius:12px;
+  display:block;
+  text-align:center;
+  margin-top:12px;
+  text-decoration:none;
+  font-weight:700;
+  letter-spacing:.5px;
+  border:none;
+}
+
+/* ===== INPUTS ===== */
+input{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  border:2px solid var(--brown);
+  background:var(--offwhite);
+}
+
+/* ===== QR FRAME ===== */
+.qr-box{
+  background:white;
+  border:4px solid var(--brown);
+  padding:14px;
+  border-radius:18px;
+  display:inline-block;
+  margin-top:20px;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  text-align:center;
+  font-size:12px;
+  padding:20px;
+  color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <img src="/static/logo.png">
+    <span class="cheque">Cheque</span><span class="pass">Pass</span>
+  </div>
+
+  <nav>
+    <a href="/">Events</a>
+    <a href="/mypasses">My Pass</a>
+    <a href="/resale">Resale</a>
+    <a href="/creator">Create</a>
+  </nav>
+</header>
+
+{% block content %}{% endblock %}
+
+<footer>
+  Powered by <b>ChequeMatez</b> • From your pocket to the party
+</footer>
+
+</body>
+</html>

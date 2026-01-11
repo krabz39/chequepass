@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="card" style="max-width:420px;margin:auto;margin-top:30px;background:var(--offwhite)">
+
+  <!-- Ticket Header -->
+  <div style="
+    background:linear-gradient(135deg,var(--teal),var(--black));
+    padding:16px;
+    border-radius:14px;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  ">
+    <div>
+      <div style="font-size:12px;opacity:.8">ChequePass</div>
+      <div style="font-size:20px;font-weight:800">
+        <span style="color:var(--teal)">Cheque</span><span style="color:var(--orange)">Pass</span>
+      </div>
+    </div>
+    <img src="/static/logo.png" style="height:40px">
+  </div>
+
+  <!-- Event Info -->
+  <div style="padding:18px">
+    <h2 style="margin:0;color:var(--brown)">{{event.title}}</h2>
+    <p style="margin:6px 0;color:#444">
+      📍 {{event.venue}}, {{event.city}}<br>
+      🕒 {{event.start_time}}
+    </p>
+
+    <div style="
+      margin-top:16px;
+      padding:14px;
+      border-radius:12px;
+      background:white;
+      border:2px dashed var(--gold);
+    ">
+      <b style="color:var(--teal)">Ticket Type:</b> {{ticket.name}}<br>
+      <b style="color:var(--teal)">Holder:</b> {{user.phone}}
+    </div>
+
+    <!-- QR Code -->
+    <div style="text-align:center;margin-top:22px">
+      <div class="qr-box">
+        <img src="/qr/{{pass.id}}" width="220">
+      </div>
+      <p style="margin-top:10px;font-size:13px;color:#666">
+        Scan at gate • One-time entry
+      </p>
+    </div>
+
+    <!-- Status -->
+    <div style="
+      margin-top:18px;
+      padding:12px;
+      border-radius:12px;
+      text-align:center;
+      background:{{ 'linear-gradient(135deg,var(--teal),var(--gold))' if pass.status=='active' else 'linear-gradient(135deg,#999,#555)' }};
+      color:white;
+      font-weight:700;
+      letter-spacing:1px;
+    ">
+      {{ pass.status.upper() }}
+    </div>
+
+    {% if pass.status == 'active' %}
+    <a class="btn" href="/resell/{{pass.id}}">
+      Resell Ticket
+    </a>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}

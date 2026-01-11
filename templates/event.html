@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <h2>{{event.title}}</h2>
+  {{event.venue}} – {{event.city}}
+
+  <input id="phone" placeholder="Phone number" style="width:100%;padding:10px">
+  <input id="amount" placeholder="Amount" style="width:100%;padding:10px;margin-top:6px">
+
+  <button class="btn" onclick="pay()">Pay & Get Pass</button>
+</div>
+
+<script>
+function pay(){
+ fetch("/pay",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    phone:phone.value,
+    event_id:"{{event.id}}",
+    amount:amount.value
+  })
+ }).then(r=>r.json()).then(x=>alert("Check phone to complete payment"))
+}
+</script>
+{% endblock %}

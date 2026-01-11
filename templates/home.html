@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3 style="padding:10px">Live Events</h3>
+<div id="events"></div>
+
+<script>
+fetch("/events").then(r=>r.json()).then(events=>{
+  let html=""
+  events.forEach(e=>{
+    html+=`<div class="card">
+      <b>${e[1]}</b><br>
+      ${e[2]} – ${e[3]}<br>
+      <a class="btn" href="/event/${e[0]}">View</a>
+    </div>`
+  })
+  document.getElementById("events").innerHTML=html
+})
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3 style="padding:10px">Gate Scanner</h3>
+
+<video id="video" style="width:100%;border-radius:12px"></video>
+<p id="status"></p>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script>
+const scanner = new Html5Qrcode("video")
+
+Html5Qrcode.getCameras().then(cams=>{
+  scanner.start(cams[0].id,{fps:10,qrbox:250},
+    qr=>{
+      fetch("/scan",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({qr:qr})
+      })
+      .then(r=>r.json())
+      .then(res=>{
+        status.innerHTML = res.valid ? "✅ ACCESS" : "❌ REJECTED"
+      })
+    }
+  )
+})
+</script>
+{% endblock %}

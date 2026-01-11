@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3 style="padding:10px">Resale Market</h3>
+<div id="market"></div>
+
+<script>
+fetch("/resales").then(r=>r.json()).then(data=>{
+  let h=""
+  data.forEach(r=>{
+    h+=`<div class="card">
+      Ticket ${r[1]}<br>
+      ${r[3]} KES<br>
+      <a class="btn" href="/resale/buy/${r[0]}">Buy</a>
+    </div>`
+  })
+  document.getElementById("market").innerHTML=h
+})
+</script>
+{% endblock %}

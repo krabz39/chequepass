@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+<h3>Create Event</h3>
+<input id="title" placeholder="Title">
+<input id="venue" placeholder="Venue">
+<input id="city" placeholder="City">
+<button class="btn" onclick="create()">Create</button>
+</div>
+
+<script>
+function create(){
+ fetch("/events",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    title:title.value,
+    venue:venue.value,
+    city:city.value
+  })
+ }).then(()=>alert("Event live"))
+}
+</script>
+{% endblock %}
