@@ -24,10 +24,10 @@
 
   <!-- Event Info -->
   <div style="padding:18px">
-    <h2 style="margin:0;color:var(--brown)">{{event.title}}</h2>
+    <h2 style="margin:0;color:var(--brown)">{{ event.title }}</h2>
     <p style="margin:6px 0;color:#444">
-      📍 {{event.venue}}, {{event.city}}<br>
-      🕒 {{event.start_time}}
+      📍 {{ event.venue }}, {{ event.city }}<br>
+      🕒 {{ event.start_time }}
     </p>
 
     <div style="
@@ -37,14 +37,14 @@
       background:white;
       border:2px dashed var(--gold);
     ">
-      <b style="color:var(--teal)">Ticket Type:</b> {{ticket.name}}<br>
-      <b style="color:var(--teal)">Holder:</b> {{user.phone}}
+      <b style="color:var(--teal)">Ticket Type:</b> {{ ticket.name }}<br>
+      <b style="color:var(--teal)">Holder:</b> {{ user.phone }}
     </div>
 
     <!-- QR Code -->
     <div style="text-align:center;margin-top:22px">
       <div class="qr-box">
-        <img src="/qr/{{pass.id}}" width="220">
+        <img src="/qr/{{ ticket_pass.id }}" width="220">
       </div>
       <p style="margin-top:10px;font-size:13px;color:#666">
         Scan at gate • One-time entry
@@ -57,16 +57,16 @@
       padding:12px;
       border-radius:12px;
       text-align:center;
-      background:{{ 'linear-gradient(135deg,var(--teal),var(--gold))' if pass.status=='active' else 'linear-gradient(135deg,#999,#555)' }};
+      background:{{ 'linear-gradient(135deg,var(--teal),var(--gold))' if ticket_pass.status=='active' else 'linear-gradient(135deg,#999,#555)' }};
       color:white;
       font-weight:700;
       letter-spacing:1px;
     ">
-      {{ pass.status.upper() }}
+      {{ ticket_pass.status.upper() }}
     </div>
 
-    {% if pass.status == 'active' %}
-    <a class="btn" href="/resell/{{pass.id}}">
+    {% if ticket_pass.status == 'active' %}
+    <a class="btn" href="/resell/{{ ticket_pass.id }}">
       Resell Ticket
     </a>
     {% endif %}
