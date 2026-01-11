@@ -15,6 +15,7 @@ from routes.resale import resale
 from routes.scan import scan
 from routes.webhooks import webhooks
 
+
 app = Flask(__name__)
 app.secret_key = APP_SECRET
 
@@ -36,7 +37,14 @@ app.register_blueprint(webhooks)
 
 @app.route("/")
 def home():
+    if not session.get("user_id"):
+        return redirect("/login")
     return render_template("home.html")
+
+@app.route("/login")
+def login_page():
+    return render_template("login.html")
+
 
 @app.route("/event/<event_id>")
 def event_page(event_id):
