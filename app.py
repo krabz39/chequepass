@@ -75,7 +75,7 @@ def my_passes_page():
         return redirect("/")
 
     p = query(
-        "SELECT id,status FROM passes WHERE owner_id=%s",
+        "SELECT id, status FROM passes WHERE owner_id=%s",
         (uid,),
         fetchone=True
     )
@@ -83,10 +83,12 @@ def my_passes_page():
     if not p:
         return "No passes yet"
 
-    return render_template("pass.html", pass={
+    return render_template("pass.html", ticket_pass={
         "id": p[0],
         "status": p[1]
     })
+
+
 
 # --------------------------------
 # API ROUTES (Your original logic)
